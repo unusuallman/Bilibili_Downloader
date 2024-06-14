@@ -1,14 +1,9 @@
-import re
-import os
 import os.path as osp
 import sys
-import json
 import time
-import argparse
 import datetime
 from selenium import webdriver
 from bs4 import BeautifulSoup
-from urllib import parse as url_parse
 import random
 
 from .tools import mkdir_if_missing, write_json, read_json
@@ -58,8 +53,11 @@ class Bilibili_Spider():
         time.sleep(self.t+2*random.random())
         html = BeautifulSoup(self.browser.page_source, features="html.parser")
 
-        page_number = html.find('span', attrs={'class':'be-pager-total'}).text
-        user_name = html.find('span', id = 'h-name').text
+        page_number = html.find('span', attrs={'class':'be-pager-total'})
+        page_number = page_number.text if page_number is not None else '0/0'
+        user_name = html.find('span', id = 'h-name')
+        user_name = user_name.text if user_name is not None else 'unknown'
+
 
         return int(page_number.split(' ')[1]), user_name
 
@@ -71,9 +69,9 @@ class Bilibili_Spider():
         time.sleep(self.t+2*random.random())
         html = BeautifulSoup(self.browser.page_source, features="html.parser")
 
-        ul_data = html.find('div', id = 'submit-video-list').find('ul', attrs= {'class': 'clearfix cube-list'})
+        ul_data = html.find('div', id = 'submit-video-list').find('ul', attrs= {'class': 'clearfix cube-list'})  # type: ignore
 
-        for li in ul_data.find_all('li'):
+        for li in ul_data.find_all('li'):  # type: ignore
             # url & title
             a = li.find('a', attrs = {'target':'_blank', 'class':'title'})
             a_url = 'https:{}'.format(a['href'])
@@ -162,7 +160,7 @@ class Bilibili_Spider():
         time.sleep(self.t+2*random.random())
         html = BeautifulSoup(self.browser.page_source, features="html.parser")
 
-        video_data = html.find('div', id = 'viewbox_report').find_all('span')
+        video_data = html.find('div', id = 'viewbox_report').find_all('span') # type: ignore
         # print(video_data)
         play = int(video_data[1]['title'][4:])
         danmu = int(video_data[2]['title'][7:])
@@ -171,7 +169,7 @@ class Bilibili_Spider():
         multi_page = html.find('div', id = 'multi_page')
         if multi_page is not None:
             url_type = 'playlist'
-            pages = multi_page.find('span', attrs= {'class': 'cur-page'}).text
+            pages = multi_page.find('span', attrs= {'class': 'cur-page'}).text # type: ignore
             # print(pages)
             page_total = int(pages[1:-1].split('/')[-1])
         else:

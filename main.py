@@ -1,5 +1,3 @@
-import os
-import os.path as osp
 import argparse
 
 from utils.bilibili_spider import Bilibili_Spider
@@ -21,5 +19,4 @@ if __name__ == '__main__':
     parser.add_argument('--detailed', action='store_true', default=False)
     args = parser.parse_args()
     print(args)
-    
     main(args)
