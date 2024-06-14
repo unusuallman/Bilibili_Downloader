@@ -23,7 +23,6 @@ class Bilibili_Spider():
         print('spider init done.')
 
     def close(self):
-        # 关闭浏览器驱动
         self.browser.quit()
 
     def time_convert(self, time_str):
