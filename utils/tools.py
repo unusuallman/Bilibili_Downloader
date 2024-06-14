@@ -34,5 +34,5 @@ def write_json(obj, fpath):
     """Writes to a json file."""
     mkdir_if_missing(osp.dirname(fpath))
     with open(fpath, 'w', encoding='utf-8') as f:
-        json.dump(obj, f, indent=4, separators=(',', ': '), ensure_ascii=False) # 添加中文支持
+        json.dump(obj, f, indent=4, separators=(',', ': '), ensure_ascii=False)
 
